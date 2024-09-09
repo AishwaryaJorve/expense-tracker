@@ -1,5 +1,6 @@
 import 'package:expense_tracker/widgets/expenses.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // flutter pub add uuid
 //dart pub add intl
@@ -9,14 +10,13 @@ var kColorScheme =
 
 var kDarkcolorScheme = ColorScheme.fromSeed(
     seedColor: const Color.fromARGB(255, 5, 99, 125),
-    brightness: Brightness.dark
-  );
+    brightness: Brightness.dark);
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MaterialApp(
-      darkTheme: ThemeData.dark().copyWith( 
+      darkTheme: ThemeData.dark().copyWith(
         useMaterial3: true,
         colorScheme: kDarkcolorScheme,
         cardTheme: CardTheme().copyWith(
@@ -28,10 +28,9 @@ void main() {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
               backgroundColor: kDarkcolorScheme.primaryContainer,
-              foregroundColor: kDarkcolorScheme.onPrimaryContainer
-              ),
+              foregroundColor: kDarkcolorScheme.onPrimaryContainer),
         ),
-      ), 
+      ),
       theme: ThemeData().copyWith(
         useMaterial3: true,
         colorScheme: kColorScheme,
@@ -60,3 +59,8 @@ void main() {
     ),
   );
 }
+
+/** Locking screen Orientiation */
+ // SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+  //     .then((fun) {
+  // })

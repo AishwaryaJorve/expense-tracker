@@ -3,6 +3,7 @@ import 'package:expense_tracker/widgets/chart/chart.dart';
 import 'package:expense_tracker/widgets/expenses_list/expense_list.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_tracker/model/expense.dart';
+import 'package:flutter/widgets.dart';
 
 class Expenses extends StatefulWidget {
   const Expenses({super.key});
@@ -37,6 +38,8 @@ class _ExpensesState extends State<Expenses> {
 
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
+        useSafeArea:
+            true, // if any field is getting overlap by camera of device
         isScrollControlled: true,
         context: context,
         builder: (ctx) => NewExpense(onAddExpense: addExpense));
@@ -56,34 +59,41 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    //  For landscap mode
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+
     Widget mainContent = const Center(
       child: Text('No expenses found. Start adding some!'),
     );
 
-    if(_registeredExpenses.isNotEmpty){
+    if (_registeredExpenses.isNotEmpty) {
       mainContent = ExpenseList(
-            expenses: _registeredExpenses,
-            removeExpense: removeExpense,
-          );
+        expenses: _registeredExpenses,
+        removeExpense: removeExpense,
+      );
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Flutter Expense Tracker"),
-        actions: [
-          IconButton(
-            onPressed: _openAddExpenseOverlay,
-            icon: const Icon(Icons.add),
-          )
-        ],
-      ),
-      body: Column(
-        children: [
-          Chart(expenses: _registeredExpenses),
-          Expanded(
-              child: mainContent),
-        ],
-      ),
-    );
+        appBar: AppBar(
+          title: const Text("Flutter Expense Tracker"),
+          actions: [
+            IconButton(
+              onPressed: _openAddExpenseOverlay,
+              icon: const Icon(Icons.add),
+            )
+          ],
+        ),
+        body: width < 600
+            ? Column(
+                children: [
+                  Chart(expenses: _registeredExpenses),
+                  Expanded(child: mainContent),
+                ],
+              )
+            : Row(children: [
+                Expanded(child: Chart(expenses: _registeredExpenses)),
+                Expanded(child: mainContent),
+              ]));
   }
 }
